@@ -24,7 +24,7 @@ class BlogLeftMainExtension extends Extension {
 					$castings = $cols->getFieldCasting($gridField);
 					
 					// Add author to columns
-					$fields['Author'] = _t("BlogEntry.AU", "Author");
+					$fields['Author.Title'] = _t("BlogEntry.AU", "Author");
 					// Add post date and remove duplicate "created" date
 					$fields['Date'] = _t("BlogEntry.DT", "Date");
 					$castings['Date'] = 'SS_Datetime->Ago';
