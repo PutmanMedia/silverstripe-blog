@@ -229,6 +229,7 @@ class BlogHolder_Controller extends BlogTree_Controller {
 
 		if(BlogEntry::$allow_wysiwyg_editing) {
 			$contentfield = new HtmlEditorField("BlogPost", _t("BlogEntry.CN"));
+            Requirements::customScript("tinyMCE.init(ssTinyMceConfig);", "blog_post_tinyMCE_config"); // Force tinymce to init - otherwise Requirements::set_suffix_requirements() causes tinymce to fail to init
 		} else {
 			$contentfield = new CompositeField(
 				new LiteralField("BBCodeHelper","<a id=\"BBCodeHint\" target='new'>"._t("BlogEntry.BBH")."</a><div class='clear'><!-- --></div>" ),
@@ -305,7 +306,10 @@ class BlogHolder_Controller extends BlogTree_Controller {
 		}
 
 		$blogentry->Status = "Published";
-		$blogentry->writeToStage("Live");
+
+		if(Member::currentUser()->Exists()) $blogentry->writeToStage("Stage");
+        else $blogentry->writeToStage("Live");
+
 		$blogentry->publish("Stage", "Live");
 
 		$this->redirect($this->Link());
